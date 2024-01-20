@@ -9,27 +9,33 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class SplachVC: UIViewController {
+class SplashVC: UIViewController {
     
     //MARK: - IBOutlets
     @IBOutlet private weak var logoImageView: UIImageView!
     
     
     //MARK: - Propreties
-    private var viewModel = SplachViewModel()
+    var viewModel : SplachViewModelType!
     private let disposeBag = DisposeBag()
     
     
     //MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        let viewModel = SplachViewModel()
+        self.viewModel = viewModel
         animateImageView()
         bindingViewModel()
     }
     
     //MARK: - methods
     
-    private func animateImageView() {
+     func animateImageView() {
+         guard let imageView = logoImageView else {
+                print("Error: logoImageView is nil")
+                return
+            }
         logoImageView.alpha = 0
         logoImageView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
         
@@ -42,6 +48,10 @@ class SplachVC: UIViewController {
     }
     
     private func bindingViewModel(){
+        guard let viewModel = viewModel else {
+                print("Error: viewModel is nil")
+                return
+            }
         viewModel.animationCompleted.subscribe(onNext: {[weak self] isCompleted in
             guard let self else {return}
             isCompleted ? goToHome() : print("The animation is not complete yet!")
