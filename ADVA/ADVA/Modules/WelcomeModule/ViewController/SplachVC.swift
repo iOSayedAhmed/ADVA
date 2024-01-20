@@ -51,7 +51,7 @@ class SplachVC: UIViewController {
     
     
     private func goToHome(){
-        let home = HomeVC()
+        let home = MainTabBarController()
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let delegate = windowScene.delegate as? SceneDelegate {
             let windows = delegate.window?.windowScene
