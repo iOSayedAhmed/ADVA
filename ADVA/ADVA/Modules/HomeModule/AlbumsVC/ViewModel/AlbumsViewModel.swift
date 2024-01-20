@@ -22,19 +22,25 @@ final class AlbumsViewModel: AlbumsViewModelType{
 //        }
     
     private let isLoadingBehavior:BehaviorRelay<Bool> = BehaviorRelay(value: false)
-    
+    private let albumeResponseBehaviorRelay:BehaviorRelay<AlbumsResponse> = BehaviorRelay(value: [])
     
     var isLoadingObservable: Observable<Bool> {
         return isLoadingBehavior.asObservable()
     }
     
+    var albumeResponseObservable: Observable<AlbumsResponse> {
+        return albumeResponseBehaviorRelay.asObservable()
+    }
+    
+    
    func getAllAlbums() async {
         isLoadingBehavior.accept(true)
         do {
             let response: AlbumsResponse = try await networkService.request(endpoint: .allAlbums, parameters: [:])
-           
-           // responseBehaviorRelay.accept(response)
-           // allCategoriesBehaviorRelay.accept(response)
+            response.forEach { item in
+                print(item)
+            }
+            albumeResponseBehaviorRelay.accept(response)
         } catch {
             print(error.localizedDescription)
         }
