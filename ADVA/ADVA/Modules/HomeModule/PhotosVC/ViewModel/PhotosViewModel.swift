@@ -49,7 +49,7 @@ final class PhotosViewModel: PhotosViewModelType{
         isLoadingBehavior.accept(false)
     }
     
-    func loadPaginationPhotos(by limit:Int = 20){
+    func loadPaginationPhotos(by limit:Int = 10){
         let startIndex = (currentPage - 1) * limit
         let endIndex = min(startIndex + limit, allPhotos.count)
         let pagePhotos =  Array(allPhotos[startIndex..<endIndex])
