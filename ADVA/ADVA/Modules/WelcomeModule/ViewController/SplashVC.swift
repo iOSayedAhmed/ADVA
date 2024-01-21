@@ -20,19 +20,42 @@ class SplashVC: UIViewController {
     private let disposeBag = DisposeBag()
     
     
+    
+    init(viewModel:SplachViewModelType,nibName:String) {
+        self.viewModel = viewModel
+        super.init(nibName: nibName, bundle: nil)
+    }
+    
+    convenience required init() {
+        let defaultViewModel = PhotoDetailsViewModel(photoData:nil)
+        self.init(viewModel: defaultViewModel as! SplachViewModelType, nibName: "\(SplashVC.self)")
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        let viewModel = SplachViewModel()
-        self.viewModel = viewModel
         animateImageView()
         bindingViewModel()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel?.didDisAppear()
+    }
+    
+    deinit {
+        print(" SplashVC Deallocted")
+    }
+    
+    
     //MARK: - methods
     
      func animateImageView() {
-         guard let imageView = logoImageView else {
+         guard  logoImageView != nil else {
                 print("Error: logoImageView is nil")
                 return
             }
@@ -54,23 +77,12 @@ class SplashVC: UIViewController {
             }
         viewModel.animationCompleted.subscribe(onNext: {[weak self] isCompleted in
             guard let self else {return}
-            isCompleted ? goToHome() : print("The animation is not complete yet!")
+            isCompleted ? viewModel.goToMainTabBar() : print("The animation is not complete yet!")
             
         }).disposed(by: disposeBag)
     }
     
     
-    private func goToHome(){
-        let home = MainTabBarController()
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let delegate = windowScene.delegate as? SceneDelegate {
-            let windows = delegate.window?.windowScene
-            let navigationController = UINavigationController(rootViewController: home)
-            navigationController.navigationBar.isHidden = true
-            navigationController.navigationBar.isTranslucent = true
-            windows?.keyWindow?.rootViewController = navigationController
-            windows?.keyWindow?.makeKeyAndVisible()
-        }
-    }
+
     
 }

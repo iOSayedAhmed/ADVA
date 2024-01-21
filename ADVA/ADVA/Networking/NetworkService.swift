@@ -95,7 +95,7 @@ class NetworkService {
             //encode data to display it as pretty json
             let prettyPrintedData = try JSONEncoder().encode(decodedData)
             if let prettyPrintedString = String(data: prettyPrintedData, encoding: .utf8) {
-                print(prettyPrintedString)
+                print("Fetched Data Successfully")
             }
             return decodedData
 

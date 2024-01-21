@@ -17,7 +17,7 @@ class PhotosVC: UIViewController {
     
     
     //MARK: - Propreties
-    let viewModel = PhotosViewModel()
+    private let viewModel:PhotosViewModel?
     private let disposeBag = DisposeBag()
     private var isLoadingMoreData = false
     
@@ -28,9 +28,24 @@ class PhotosVC: UIViewController {
         setupCollectionView()
         getAllPhotos()
         bindingViewModel()
-        
+        print(viewModel?.coordinator)
     }
     
+    
+    init(viewModel:PhotosViewModel,nibName:String) {
+        self.viewModel = viewModel
+        super.init(nibName: nibName, bundle: nil)
+    }
+    
+    convenience required init() {
+        let defaultCoordinator = PhotosCoordinator(navigationController: UINavigationController())
+        let defaultViewModel = PhotosViewModel()
+        self.init(viewModel: defaultViewModel, nibName: "\(PhotosVC.self)")
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - Methods
     
@@ -50,14 +65,14 @@ class PhotosVC: UIViewController {
     
     private func getAllPhotos() {
         Task {
-            await viewModel.getAllPhotos()
+            await viewModel?.getAllPhotos()
         }
     }
     
     private func bindingViewModel(){
         
         //bind Activity Indicator View
-        viewModel.isLoadingObservable
+        viewModel?.isLoadingObservable
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: {[weak self] in
                 guard let self else {return}
@@ -65,7 +80,7 @@ class PhotosVC: UIViewController {
             }).disposed(by: disposeBag)
         
         //bind Collection View
-        viewModel.photoResponseObservable
+        viewModel?.photoResponseObservable
             .observe(on: MainScheduler.instance)
             .bind(to: collectionView.rx.items(cellIdentifier: "\(PhotosCollotionViewCell.self)", cellType: PhotosCollotionViewCell.self)){ [weak self] index,model,cell in
                 guard let self else {return}
@@ -79,7 +94,8 @@ class PhotosVC: UIViewController {
             .subscribe(onNext: {  [weak self] model in
                 guard let self else {return}
                 print(model.title)
-                goToIPhotoDetails(with: model)
+                viewModel?.didSelectPhoto(photoData: model)
+//                goToIPhotoDetails(with: model)
             }).disposed(by: disposeBag)
         
         
@@ -94,7 +110,7 @@ class PhotosVC: UIViewController {
                 if offsetY > contentHeight - height - 20 {
                     self.activityIndicator.startAnimating()
                     self.isLoadingMoreData = true
-                    self.viewModel.loadMorePhotos()
+                    self.viewModel?.loadMorePhotos()
                 }
                 
             })

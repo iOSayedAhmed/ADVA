@@ -16,10 +16,10 @@ protocol AlbumsViewModelType {
 final class AlbumsViewModel: AlbumsViewModelType{
    
     private var networkService = NetworkService()
-    
-//        init(networkService: NetworkService) {
-//            self.networkService = networkService
-//        }
+    weak var coordinator:AlbumsCoordinator?
+        init(coordinator: AlbumsCoordinator? = nil) {
+            self.coordinator = coordinator
+        }
     
     private let isLoadingBehavior:BehaviorRelay<Bool> = BehaviorRelay(value: false)
     private let albumeResponseBehaviorRelay:BehaviorRelay<AlbumsResponse> = BehaviorRelay(value: [])

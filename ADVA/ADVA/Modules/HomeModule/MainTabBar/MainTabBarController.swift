@@ -14,7 +14,6 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setuptabBarAppearance()
-        createTabBarItem()
         view.backgroundColor = .systemBackground
         
     }
@@ -53,24 +52,6 @@ class MainTabBarController: UITabBarController {
             tabBar.layer.shadowOpacity = 0.3
         }
         
-    }
-    
-    private func createTabBarItem() {
-        // Create tab bar items
-        let homeVC = PhotosVC()
-        let tab1 = UINavigationController(rootViewController: homeVC)
-        tab1.title = "Photos"
-        tab1.tabBarItem.selectedImage = UIImage(systemName: "photo.fill")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-        tab1.tabBarItem.image = UIImage(systemName: "photo")?.withTintColor(.gray, renderingMode: .alwaysOriginal)
-        
-        let albumVC = AlbumsVC()
-        let tab2 = UINavigationController(rootViewController: albumVC)
-        tab2.title = "Albums"
-        tab2.tabBarItem.selectedImage = UIImage(systemName: "rectangle.stack.fill")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-        tab2.tabBarItem.image = UIImage(systemName: "rectangle.stack")?.withTintColor(.gray, renderingMode: .alwaysOriginal)
-        
-        // Add tab bar items to the tab bar
-        viewControllers = [tab1,tab2]
     }
     
     

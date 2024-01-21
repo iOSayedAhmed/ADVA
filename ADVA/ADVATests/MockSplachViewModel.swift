@@ -10,6 +10,14 @@ import RxSwift
 @testable import ADVA
 
 class MockSplachViewModel: SplachViewModelType {
+    func goToMainTabBar() {
+        
+    }
+    
+    func didDisAppear() {
+        
+    }
+    
     var animationCompleted: BehaviorSubject<Bool> = BehaviorSubject<Bool>(value: false)
     
     var animationDidFinishCalled = false

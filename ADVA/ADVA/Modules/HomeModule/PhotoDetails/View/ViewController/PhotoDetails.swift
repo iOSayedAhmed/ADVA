@@ -17,6 +17,21 @@ class PhotoDetails: UIViewController {
     
     //MARK: - Propreties
      var photoData : PhotosResponseElement?
+    private let viewModel:PhotoDetailsViewModel?
+    
+    init(viewModel:PhotoDetailsViewModel,nibName:String) {
+        self.viewModel = viewModel
+        super.init(nibName: nibName, bundle: nil)
+    }
+    
+    convenience required init() {
+        let defaultViewModel = PhotoDetailsViewModel(photoData:nil)
+        self.init(viewModel: defaultViewModel, nibName: "\(PhotoDetails.self)")
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     // MARK: - View LifeCycle
@@ -28,7 +43,6 @@ class PhotoDetails: UIViewController {
         setupTabGesture()
 
     }
-
 
     
     

@@ -19,7 +19,7 @@ final class CollectionViewLayouts {
         item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
 
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .fractionalWidth(0.5))
+                                               heightDimension: .fractionalHeight(0.45))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
 
         let section = NSCollectionLayoutSection(group: group)

@@ -13,15 +13,17 @@ protocol PhotosViewModelType {
     func getAllPhotos() async
     func loadPaginationPhotos(by limit:Int)
     func loadMorePhotos()
+    func didSelectPhoto(photoData:PhotosResponseElement)
 }
 
 final class PhotosViewModel: PhotosViewModelType{
     
     private var networkService = NetworkService()
+     var coordinator:PhotosCoordinator?
     
-    //        init(networkService: NetworkService) {
-    //            self.networkService = networkService
-    //        }
+//    init(coordinator: PhotosCoordinator) {
+//        self.coordinator = coordinator
+//    }
     
     private var allPhotos: [PhotosResponseElement] = []
     private var currentPage = 1
@@ -61,4 +63,9 @@ final class PhotosViewModel: PhotosViewModelType{
         currentPage += 1
         loadPaginationPhotos()
     }
+    
+    func didSelectPhoto(photoData:PhotosResponseElement){
+        coordinator?.startPhotoDetails(photoData:photoData )
+    }
+    
 }

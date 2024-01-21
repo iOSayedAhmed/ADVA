@@ -10,14 +10,16 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var appCoordenator:AppCoordinator?
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
-         window = UIWindow(windowScene: scene)
-        let spalshViewController    = SplashVC()
-        window?.rootViewController  = spalshViewController
-        window?.makeKeyAndVisible()
+        let window = UIWindow(windowScene: scene)
+        self.window = window
+        self.appCoordenator = AppCoordinator(window: window)
+        appCoordenator?.start()
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

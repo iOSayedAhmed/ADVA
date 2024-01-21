@@ -16,7 +16,7 @@ class AlbumsVC: UIViewController {
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     //MARK: - Propreties
-    let viewModel = AlbumsViewModel()
+    private let viewModel : AlbumsViewModel?
     private let disposeBag = DisposeBag()
     
     //MARK: - View Lifecycle
@@ -26,6 +26,21 @@ class AlbumsVC: UIViewController {
         setupCollectionView()
         getAllAlbums()
         bindingViewModel()
+    }
+    
+    
+    init(viewModel:AlbumsViewModel,nibName:String) {
+        self.viewModel = viewModel
+        super.init(nibName: nibName, bundle: nil)
+    }
+    
+    convenience required init() {
+        let defaultViewModel = AlbumsViewModel()
+        self.init(viewModel: defaultViewModel, nibName: "\(AlbumsVC.self)")
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
 
@@ -44,19 +59,19 @@ class AlbumsVC: UIViewController {
     
     private func getAllAlbums(){
         Task {
-            await viewModel.getAllAlbums()
+            await viewModel?.getAllAlbums()
         }
     }
     
     private func bindingViewModel(){
-        viewModel.isLoadingObservable
+        viewModel?.isLoadingObservable
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: {[weak self] in
                 guard let self else {return}
                 $0 ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
             }).disposed(by: disposeBag)
         
-        viewModel.albumeResponseObservable
+        viewModel?.albumeResponseObservable
             .observe(on: MainScheduler.instance)
             .bind(to: collectionView.rx.items(cellIdentifier: "\(PhotosCollotionViewCell.self)", cellType: PhotosCollotionViewCell.self)){ index,model,cell in
                 cell.setupAlbumCell(from: model)
