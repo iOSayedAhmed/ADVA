@@ -17,7 +17,7 @@ This application is a modern photo gallery app developed using the latest techno
 
 1. Swift
 2. UIKit - XIB Files
-3. MVVM (Model-View-ViewModel)
+3. MVVM - C (Model-View-ViewModel) - Coordinator
 4. RXSwift
 5. SPM (Swift Package Manager)
 6. JSONPlaceholder API
